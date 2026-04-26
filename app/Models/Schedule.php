@@ -10,10 +10,12 @@ class Schedule extends Model
         'customer_id',
         'vehicle_id',
         'service_type_id',
-        'sms_template_id',
+        'sms_batch_id',
         'send_at',
-        'status',
-        'message_preview',
+    ];
+
+    protected $casts = [
+        'send_at' => 'datetime',
     ];
 
 
@@ -27,36 +29,23 @@ class Schedule extends Model
         return $this->belongsTo(Vehicle::class);
     }
 
-    public function template()
+    public function serviceType()
     {
-        return $this->belongsTo(SmsTemplate::class, 'sms_template_id');
+        return $this->belongsTo(ServiceType::class);
     }
 
-    // /**
-    //  * Scopes
-    //  */
-
-    public function scopePending($query)
+    public function batch()
     {
-        return $query->where('status', 'pending');
+        return $this->belongsTo(SmsBatch::class, 'sms_batch_id');
     }
 
-    // public function scopeDue($query)
-    // {
-    //     return $query->where('send_at', '<=', now());
-    // }
-
-    /**
-     * Helpers
-     */
-
-    public function markAsSent()
+     public function scopeDue($query)
     {
-        $this->update(['status' => 'sent']);
+        return $query->where('send_at', '<=', now());
     }
 
-    public function markAsFailed()
+    public function scopeUnbatched($query)
     {
-        $this->update(['status' => 'failed']);
+        return $query->whereNull('sms_batch_id');
     }
 }

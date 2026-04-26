@@ -61,7 +61,7 @@ class ServiceController extends Controller
 
             $nextDue = now()->addDays($interval);
 
-            //TODO: Please make here a code that merges those same sched + same vehicle + same owner with different service type to send just in a single sms (batch).
+            //TODO: There will be changes here because of the Batch SMS Architectural revisal
 
             $template = SmsTemplate::find(1);
 
