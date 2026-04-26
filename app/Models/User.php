@@ -46,6 +46,18 @@ class User extends Authenticatable
     {
         return $this->roles()->whereNotNull('customer_id');
     }
+      public function currentRole()
+    {
+        return $this->roles()->latest()->first();
+    }
+    public function isShopUser(): bool
+    {
+        return $this->roles()->whereNotNull('shop_id')->exists();
+    }
+    public function isCustomer(): bool
+    {
+        return $this->roles()->whereNotNull('customer_id')->exists();
+    }
 
     /**
      * Role checks

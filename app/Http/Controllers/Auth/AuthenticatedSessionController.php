@@ -27,13 +27,49 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-    public function store(LoginRequest $request): RedirectResponse
+    public function store(LoginRequest $request)
     {
         $request->authenticate();
-
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user();
+
+        $role = $user->currentRole();
+
+        if (!$role) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+            // return redirect('/login')
+            return redirect()->intended(route('shop.dashboard'))->withErrors([
+                'email' => 'No role assigned to this user.'
+            ]);;
+        }
+
+        /*
+        |----------------------------------------
+        | SHOP USER
+        |----------------------------------------
+        */
+        if ($role->shop_id) {
+
+            // optional: preload shop context
+            $shop = $user->activeShop();
+
+            // return redirect()->route('shop.dashboard');
+            return redirect()->route('dashboard');
+        }
+
+        /*
+        |----------------------------------------
+        | CUSTOMER USER
+        |----------------------------------------
+        */
+        if ($role->customer_id) {
+            // return redirect()->route('customer.dashboard');
+            return redirect()->route('dashboard');
+        }
+
+        return redirect()->route('dashboard');
     }
 
     /**
@@ -42,11 +78,9 @@ class AuthenticatedSessionController extends Controller
     public function destroy(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
-
         $request->session()->invalidate();
-
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }
