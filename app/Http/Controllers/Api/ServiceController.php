@@ -63,7 +63,7 @@ class ServiceController extends Controller
 
             // 4. Compute next due + send time
             $nextDue = now()->addDays($interval);
-            $sendAt = $nextDue->copy()->subDays(3);
+            $sendAt = $nextDue->copy()->subDays(3)->toDateString();
 
             // 🔥 5. Find or create SMS Batch (CORE LOGIC)
             $batch = SmsBatch::firstOrCreate(

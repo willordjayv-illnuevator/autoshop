@@ -31,7 +31,7 @@ class ServiceSeeder extends Seeder
                 // Create 2–3 service records per vehicle
                 for ($i = 0; $i < 3; $i++) {
 
-                    $serviceDate = Carbon::now()->subDays(rand(10, 200));
+                    $serviceDate = Carbon::now()->subDays(rand(10, 200))->toDateString();
 
                     $service = Service::create([
                         'customer_id' => $customer->id,

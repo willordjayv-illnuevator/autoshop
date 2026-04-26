@@ -33,7 +33,7 @@ class ScheduleSeeder extends Seeder
             'customer_id' => $customer->id,
             'vehicle_id' => $vehicle->id,
             'sms_template_id' => $template->id,
-            'send_at' => Carbon::now()->addDay(),
+            'send_at' => Carbon::now()->addDay()->toDateString(),
             'status' => 'pending',
         ]);
 

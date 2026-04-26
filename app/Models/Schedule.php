@@ -41,7 +41,7 @@ class Schedule extends Model
 
      public function scopeDue($query)
     {
-        return $query->where('send_at', '<=', now());
+        return $query->whereDate('send_at', '<=', now());
     }
 
     public function scopeUnbatched($query)

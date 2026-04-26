@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
             $table->foreignId('service_type_id')->constrained();
             $table->foreignId('sms_batch_id')->nullable()->constrained()->nullOnDelete();
-            $table->dateTime('send_at');
+            $table->date('send_at');
             $table->timestamps();
         });
     }

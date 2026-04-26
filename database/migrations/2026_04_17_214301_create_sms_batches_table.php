@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('vehicle_id')->constrained();
-            $table->dateTime('send_at');
+            $table->date('send_at');
             $table->string('status')->default('pending');
             $table->foreignId('sms_template_id')->constrained();
             $table->text('message_preview')->nullable();
