@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Service;
 use App\Models\ServiceItem;
 use App\Models\Schedule;
-use App\Models\SmsTemplate;
+use App\Models\SmsBatch;
 
 class ServiceController extends Controller
 {
@@ -53,39 +53,38 @@ class ServiceController extends Controller
                 'custom_interval_days' => $item['interval_days'] ?? null,
             ]);
 
-            // 3. Get interval (custom OR default)
+            // 3. Determine interval
             $interval = $item['interval_days']
                 ?? $serviceItem->serviceType->default_interval_days;
 
-            if (!$interval) continue;
+            if (!$interval) {
+                continue;
+            }
 
+            // 4. Compute next due + send time
             $nextDue = now()->addDays($interval);
+            $sendAt = $nextDue->copy()->subDays(3);
 
-            //TODO: There will be changes here because of the Batch SMS Architectural revisal
+            // 🔥 5. Find or create SMS Batch (CORE LOGIC)
+            $batch = SmsBatch::firstOrCreate(
+                [
+                    'customer_id' => $service->customer_id,
+                    'vehicle_id' => $service->vehicle_id,
+                    'sms_template_id' => 1, // can be dynamic later
+                    'send_at' => $sendAt,
+                ],
+                [
+                    'status' => 'pending',
+                ]
+            );
 
-            $template = SmsTemplate::find(1);
-
-            $message = $template->message_body;
-
-            $message = str_replace('{fname}', $service->customer->fname, $message);
-            $message = str_replace('{vehicle}', $service->vehicle->make . ' ' . $service->vehicle->plate_number, $message);
-            $message = str_replace('{service_type}', $serviceItem->serviceType->name, $message);
-
-            // 4. Cancel old pending schedules for this service type
-            Schedule::where('vehicle_id', $service->vehicle_id)
-                ->where('service_type_id', $item['service_type_id'])
-                ->where('status', 'pending')
-                ->update(['status' => 'cancelled']);
-
-
-            // 5. Create new schedule
+            // 6. Create Schedule (NO SMS LOGIC HERE)
             Schedule::create([
                 'customer_id' => $service->customer_id,
                 'vehicle_id' => $service->vehicle_id,
                 'service_type_id' => $item['service_type_id'],
-                'send_at' => $nextDue->copy()->subDays(3),
-                'message_preview' => $message,
-                'status' => 'pending'
+                'sms_batch_id' => $batch->id,
+                'send_at' => $sendAt,
             ]);
         }
 
