@@ -105,7 +105,10 @@ return [
         ),
     ],
 
-    'version' => '0.1.0',
+    'version' => '0.3.0',
+    // 0.1.0 initial
+    // 0.2.0 SMS batching + SMS architecture refractioned
+    // 0.3.0 b2b + b2c setup (service + user/roles)
 
     /*
     |--------------------------------------------------------------------------

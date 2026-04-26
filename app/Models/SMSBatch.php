@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+//TODO: To make a sent logs model
 
 class SmsBatch extends Model
 {

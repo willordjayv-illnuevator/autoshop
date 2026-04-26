@@ -36,6 +36,7 @@ class ServiceSeeder extends Seeder
                     $service = Service::create([
                         'customer_id' => $customer->id,
                         'vehicle_id' => $vehicle->id,
+                        'shop_id' => $vehicle->id,
                         'service_date' => $serviceDate,
                         'mileage' => rand(1000, 100000),
                         'notes' => 'Seeded service record',

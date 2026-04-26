@@ -39,6 +39,7 @@ class ServiceController extends Controller
         $service = Service::create([
             'customer_id' => $validated['customer_id'],
             'vehicle_id' => $validated['vehicle_id'],
+            'shop_id' => 1, //dynamic future
             'service_date' => $validated['service_date'],
             'mileage' => $validated['mileage'] ?? null,
             'notes' => $validated['notes'] ?? null,
@@ -70,6 +71,7 @@ class ServiceController extends Controller
                 [
                     'customer_id' => $service->customer_id,
                     'vehicle_id' => $service->vehicle_id,
+                    'shop_id' => $service->vehicle_id,
                     'sms_template_id' => 1, // can be dynamic later
                     'send_at' => $sendAt,
                 ],
@@ -82,6 +84,7 @@ class ServiceController extends Controller
             Schedule::create([
                 'customer_id' => $service->customer_id,
                 'vehicle_id' => $service->vehicle_id,
+                'shop_id' => 1,
                 'service_type_id' => $item['service_type_id'],
                 'sms_batch_id' => $batch->id,
                 'send_at' => $sendAt,

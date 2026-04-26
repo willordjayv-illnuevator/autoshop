@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained();
             $table->foreignId('vehicle_id')->constrained();
+            $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
             $table->date('send_at');
             $table->string('status')->default('pending');
             $table->foreignId('sms_template_id')->constrained();

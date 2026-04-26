@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('customer_id')->constrained()->cascadeOnDelete();
             $table->foreignId('vehicle_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('shop_id')->constrained()->cascadeOnDelete();
             $table->foreignId('service_type_id')->constrained();
             $table->foreignId('sms_batch_id')->nullable()->constrained()->nullOnDelete();
             $table->date('send_at');

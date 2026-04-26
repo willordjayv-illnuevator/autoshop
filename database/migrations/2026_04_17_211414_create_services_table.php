@@ -19,8 +19,10 @@ return new class extends Migration
         $table->foreignId('vehicle_id')
             ->constrained()
             ->cascadeOnDelete();
-
-            $table->integer('mileage')->nullable();
+        $table->foreignId('shop_id')
+            ->constrained()
+            ->cascadeOnDelete();
+        $table->integer('mileage')->nullable();
         $table->date('service_date');
         $table->text('notes')->nullable();
         $table->timestamps();

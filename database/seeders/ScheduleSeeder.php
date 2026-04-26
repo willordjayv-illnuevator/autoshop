@@ -32,6 +32,7 @@ class ScheduleSeeder extends Seeder
         $batch = SmsBatch::create([
             'customer_id' => $customer->id,
             'vehicle_id' => $vehicle->id,
+            'shop_id' => 1,
             'sms_template_id' => $template->id,
             'send_at' => Carbon::now()->addDay()->toDateString(),
             'status' => 'pending',
@@ -41,6 +42,7 @@ class ScheduleSeeder extends Seeder
         Schedule::create([
             'customer_id' => $customer->id,
             'vehicle_id' => $vehicle->id,
+            'shop_id' => 1,
             'service_type_id' => $oilChange->id,
             'sms_batch_id' => $batch->id,
             'send_at' => $batch->send_at,
@@ -50,6 +52,7 @@ class ScheduleSeeder extends Seeder
         Schedule::create([
             'customer_id' => $customer->id,
             'vehicle_id' => $vehicle->id,
+            'shop_id' => 1,
             'service_type_id' => $brakeCheck->id,
             'sms_batch_id' => $batch->id,
             'send_at' => $batch->send_at,
