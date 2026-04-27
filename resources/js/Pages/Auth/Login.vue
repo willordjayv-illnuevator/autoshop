@@ -93,6 +93,18 @@ const submit = () => {
                     Log in
                 </PrimaryButton>
             </div>
+            <div class="mt-4">
+                <a
+                    href="/auth/google/redirect"
+                    class="w-full flex items-center justify-center gap-2 px-4 py-2 border rounded-md hover:bg-gray-50"
+                >
+                    <img
+                        src="https://www.google.com/favicon.ico"
+                        class="w-4 h-4"
+                    />
+                    Login with Google
+                </a>
+            </div>
         </form>
     </GuestLayout>
 </template>
